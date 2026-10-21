@@ -39,7 +39,12 @@ form.addEventListener('submit', async (event) => {
     });
     message.textContent = 'أُرسل طلب التقييم. للتحقق من الحفظ، افتح جدول Google Sheets وتأكد من ظهور صف جديد.';
     form.reset();
-    document.getElementById('offer').hidden = false;
+    form.hidden = true;
+    document.querySelector('.survey-wrap').classList.add('show-rewards');
+    const offer = document.getElementById('offer');
+    document.getElementById('rewardRef').textContent = 'POV-' + Math.random().toString(16).slice(2,10).toUpperCase();
+    offer.hidden = false;
+    offer.scrollIntoView({ behavior: 'smooth', block: 'start' });
   } catch (error) {
     message.textContent = 'لم يتمكن المتصفح من إرسال الطلب. تأكد من الاتصال ومن نشر Apps Script بخيار Anyone.';
     console.error('POV Café submit error:', error);

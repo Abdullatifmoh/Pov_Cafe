@@ -1,11 +1,11 @@
 <!doctype html>
-<html lang="ar" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#f8f6ef"><meta name="description" content="POV Café × فطن — تجربة توعوية عن التصيّد الإلكتروني"><title>POV Café | بوف</title><link rel="stylesheet" href="style.css?v=20261022-2"></head>
+<html lang="ar" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#f8f6ef"><meta name="description" content="POV Café × فطن — تجربة توعوية عن التصيّد الإلكتروني"><title>POV Café | بوف</title><link rel="stylesheet" href="style.css?v=20261022-5"></head>
 <body id="top">
 <header class="topbar shell"><a class="logo" href="#top" aria-label="POV Café">POV <small>Café</small></a><span>وقفة صغيرة... وعي أكبر.</span></header>
 <main>
 <section class="hero shell">
   <div class="hero-copy"><div class="pill">تمرين توعوي · أنت في تجربة آمنة</div><h1>القهوة<br>مجانية...<br><strong>لكن بياناتك<br>مو مجانية.</strong></h1><p class="intro">جيت عشان كوب قهوة؟ هذا بالضبط كيف تبدأ بعض محاولات التصيّد: عرض مغرٍ، باركود، ثم طلب معلوماتك.</p><a href="#learn" class="btn">اكتشف الفكرة ↓</a><p class="disclaimer">إعلان برنامج الولاء جزء من المحاكاة، وليس تسجيلًا فعليًا. لم نطلب منك بيانات دخول أو دفع.</p></div>
-  <div class="cup-card"><img src="assets/pov-cup-fallback.png" alt="كوب POV الأزرق للقهوة المثلجة مع طائر بوف والنظارة الشمسية"><div class="cup-caption">قهوتك تستاهل... وبياناتك أغلى.</div></div>
+  <div class="cup-card"><img src="assets/pov-cup-original.png" alt="كوب POV الأزرق للقهوة المثلجة مع طائر بوف والنظارة الشمسية"></div>
 </section>
 <div class="shell"><hr class="rule"></div>
 <section id="learn" class="section shell"><div class="section-tag">01 / قبل أي نقرة</div><h2>الباركود مو دليل ثقة.</h2><p>المسح وحده لا يعني سرقة معلوماتك. الخطر قد يبدأ عند إدخال كلمة مرور أو رمز تحقق أو بيانات بطاقة في صفحة مزيفة.</p><div class="tip-grid"><article class="tip"><div class="tip-num">01</div><h3>شيّك على العنوان</h3><p>اقرأ النطاق كاملًا. الاسم والشعار المألوفان لا يثبتان أن الموقع رسمي.</p></article><article class="tip"><div class="tip-num">02</div><h3>خذ وقتك</h3><p>هدية مستعجلة أو تهديد بإيقاف الحساب؟ توقف وتحقق من المصدر مباشرة.</p></article><article class="tip"><div class="tip-num">03</div><h3>احمِ أسرارك</h3><p>لا تشارك رمز التحقق أو كلمة المرور للحصول على مكافأة.</p></article></div></section>
@@ -21,5 +21,17 @@
 <label for="feedback" class="block-label">اقتراح أو مشكلة واجهتك (اختياري)</label><textarea id="feedback" rows="4" maxlength="800" placeholder="وش نقدر نسوي عشان تكون تجربتك أفضل؟"></textarea>
 <label class="check"><input type="checkbox" id="tried" required><span>جرّبت فطن وأقيّم تجربتي الفعلية.</span></label><label class="check"><input type="checkbox" id="consent" required><span>أوافق على حفظ إجاباتي لتحسين فطن، دون طلب بيانات تعريفية.</span></label>
 <div class="submit-row"><span class="hint">ابدأ من «جرّب فطن» أعلاه، ثم عد إلى التقييم.</span><button type="submit" class="btn" id="sendButton">أرسل تقييمي واكشف العروض ←</button></div><p id="message" role="status" aria-live="polite"></p>
-</form><div id="offer" class="offer" hidden><h3>شكرًا لمشاركتك! ☕</h3><p>هذه تجربة توعوية وليست وعدًا بكوب مجاني أو خصم فعلي. استمر في التحقق من الروابط قبل مشاركة بياناتك.</p></div></div></section>
-</main><footer>POV Café × فطن <span>تجربة توعوية ضد التصيّد • وعيك أولًا</span></footer><script src="script.js?v=20261022-2"></script></body></html>
+</form><section id="offer" class="offer-reveal" hidden aria-live="polite">
+ <div class="section-tag">03 / رأيك يطوّر فطن</div>
+ <h2>جرّبت؟ علّمنا وش نطوّر.</h2>
+ <div class="pill">تم تقديم تقييمك، شكرًا لك!</div>
+ <h2 class="offer-title">وعيك مكسب.<br>وهذه عروضك.</h2>
+ <div class="offer-grid">
+   <article class="reward"><div class="reward-value">١٥ <small>ريال</small></div><h3>V60 + شوكولاتة أو كوكيز</h3></article>
+   <article class="reward"><div class="reward-value">١٠٪</div><h3>خصم على الماتشا أو المحصول الفاخر</h3></article>
+ </div>
+ <div class="reward-meta"><p>مرجع إكمال الاستبيان</p><strong id="rewardRef" dir="ltr">POV-XXXXXXXX</strong></div>
+ <p class="reward-disclaimer">أعرض هذه الشاشة على فريق الحملة لتفعيل العرض وقبوله ومدته يحددها الكافيه؛ هذا المرجع يثبت إكمال الاستبيان ولا يثبت صرف المكافأة.</p>
+ <p class="hint">تنبيه: أرسل الموقع طلب التقييم، لكن تأكيد حفظه في Google Sheets يتطلب التحقق من الجدول.</p>
+</section></div></section>
+</main><footer>POV Café × فطن <span>تجربة توعوية ضد التصيّد • وعيك أولًا</span></footer><script src="script.js?v=20261022-5"></script></body></html>
