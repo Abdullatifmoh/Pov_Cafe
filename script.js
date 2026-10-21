@@ -1,34 +1,68 @@
-// Static GitHub Pages demo. To collect responses centrally, set a Formspree endpoint below.
-// Create a form at https://formspree.io/ and paste its endpoint, e.g. https://formspree.io/f/xxxxxxxx
-const FORM_ENDPOINT = '';
-for (const field of ['ease','clarity','benefit']) {
-  const group=document.querySelector(`[data-field="${field}"]`);
-  for(let n=1;n<=5;n++){
-    const label=document.createElement('label');
-    label.innerHTML=`<input type="radio" name="${field}" value="${n}" required aria-label="${n} من 5"><span>${n}</span>`;
+// بعد نشر Google Apps Script، ضع رابط تطبيق الويب الذي ينتهي بـ /exec هنا.
+const SHEETS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxtXqHMxVWyp5idXSAS8bhBv4VlEq17orh1D1U_xSIe4NdQyVPI_sUxHFa3AwBxGAIH/exec';
+
+for (const field of ['ease', 'clarity', 'benefit']) {
+  const group = document.querySelector(`[data-field="${field}"]`);
+  for (let n = 1; n <= 5; n++) {
+    const label = document.createElement('label');
+    label.innerHTML = `<input type="radio" name="${field}" value="${n}" required aria-label="${n} من 5"><span>${n}</span>`;
     group.appendChild(label);
   }
 }
-const form=document.getElementById('ratingForm');
-const message=document.getElementById('message');
-form.addEventListener('submit',async e=>{
- e.preventDefault();
- if(!form.reportValidity())return;
- const data=Object.fromEntries(new FormData(form).entries());
- data.submitted_at=new Date().toISOString();
- const btn=form.querySelector('button[type="submit"]');btn.disabled=true;
- try{
-  if(FORM_ENDPOINT){
-   const r=await fetch(FORM_ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(data)});
-   if(!r.ok)throw new Error('تعذر حفظ التقييم. حاول لاحقًا.');
-   message.textContent='تم إرسال تقييمك بنجاح.';
-  }else{
-   // On GitHub Pages alone, ratings are stored only in this browser; no central collection.
-   const saved=JSON.parse(localStorage.getItem('povRatings')||'[]');saved.push(data);
-   localStorage.setItem('povRatings',JSON.stringify(saved));
-   message.textContent='تم حفظ تقييمك في هذا المتصفح فقط. لعرض تقييمات جميع الزوار، اربط الموقع بخدمة استقبال النماذج.';
+
+const form = document.getElementById('ratingForm');
+const message = document.getElementById('message');
+
+// JSONP لتلقي تأكيد حقيقي من Apps Script مع GitHub Pages دون CORS.
+// لا يرسل أي كلمات مرور أو بيانات تعريفية؛ التقييمات فقط.
+function submitRating(data) {
+  return new Promise((resolve, reject) => {
+    const callback = 'povCallback_' + Date.now() + '_' + Math.random().toString(36).slice(2);
+    const script = document.createElement('script');
+    let finished = false;
+    const timer = setTimeout(() => complete(new Error('انتهت مهلة الاتصال. تحقق من اتصالك وحاول مجددًا.')), 20000);
+    function complete(error, result) {
+      if (finished) return;
+      finished = true;
+      clearTimeout(timer);
+      delete window[callback];
+      script.remove();
+      if (error) reject(error); else resolve(result);
+    }
+    window[callback] = result => complete(null, result);
+    script.onerror = () => complete(new Error('تعذر الوصول لخدمة التقييمات. تحقق من رابط Apps Script.'));
+    const url = new URL(SHEETS_WEB_APP_URL);
+    for (const [key, value] of Object.entries(data)) url.searchParams.set(key, String(value));
+    url.searchParams.set('callback', callback);
+    script.src = url.toString();
+    document.head.appendChild(script);
+  });
+}
+
+form.addEventListener('submit', async event => {
+  event.preventDefault();
+  if (!form.reportValidity()) return;
+  if (!SHEETS_WEB_APP_URL || !/^https:\/\/script\.google\.com\/macros\/s\/.+\/exec(?:\?.*)?$/.test(SHEETS_WEB_APP_URL)) {
+    message.textContent = 'لم يتم إعداد استقبال الردود بعد. أضف رابط Google Apps Script في script.js.';
+    return;
   }
-  document.getElementById('offer').hidden=false;
-  document.getElementById('offer').scrollIntoView({behavior:'smooth',block:'center'});
- }catch(err){message.textContent=err.message||'حدث خطأ في الإرسال';}finally{btn.disabled=false;}
+  const data = Object.fromEntries(new FormData(form).entries());
+  data.requestId = (globalThis.crypto?.randomUUID?.() || `${Date.now()}-${Math.random().toString(36).slice(2)}`);
+  const button = form.querySelector('button[type="submit"]');
+  button.disabled = true;
+  message.textContent = 'جارٍ تسجيل تقييمك…';
+  try {
+    const result = await submitRating(data);
+    if (!result || result.ok !== true) throw new Error(result?.error || 'تعذر تسجيل الرد. حاول مرة أخرى.');
+    message.textContent = result.excelUpdated === false
+      ? 'تم حفظ تقييمك في الجدول بنجاح، لكن تحديث نسخة Excel تعذّر مؤقتًا.'
+      : 'تم حفظ تقييمك وتحديث ملف Excel بنجاح ✓';
+    form.reset();
+    document.getElementById('offer').hidden = false;
+    document.getElementById('offer').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  } catch (error) {
+    message.textContent = error.message || 'حدث خطأ أثناء الإرسال.';
+  } finally {
+    button.disabled = false;
+  }
 });
