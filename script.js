@@ -37,7 +37,7 @@ form.addEventListener('submit', async (event) => {
       headers: { 'Content-Type': 'text/plain;charset=UTF-8' },
       body: JSON.stringify(payload)
     });
-    message.textContent = 'أُرسل طلب التقييم. للتحقق من الحفظ، افتح جدول Google Sheets وتأكد من ظهور صف جديد.';
+    message.textContent = 'أُرسل طلب التقييم، ويمكنك رؤية العروض أدناه. للتحقق من حفظ الرد افتح جدول Google Sheets.';
     form.reset();
     form.hidden = true;
     document.querySelector('.survey-wrap').classList.add('show-rewards');

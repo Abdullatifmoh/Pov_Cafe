@@ -13,3 +13,6 @@
 @media(max-width:520px){.offer-grid{grid-template-columns:1fr}.reward{min-height:135px}.offer-reveal .offer-title{font-size:36px}}
 
 .survey-wrap.show-rewards{width:100%}.survey-wrap.show-rewards > .section-tag,.survey-wrap.show-rewards > h2,.survey-wrap.show-rewards > p{display:none}
+
+[hidden]{display:none!important}
+.cup-card img{display:block;width:100%;height:100%;object-fit:cover}
