@@ -1,18 +1,17 @@
-# POV Café × فطن — النسخة الكاملة
+# POV Café × فطن — نسخة GitHub المصححة
 
-## التشغيل على GitHub Pages
-ارفع `index.html` و`style.css` و`script.js` ومجلد `assets` إلى جذر المستودع `Pov_Cafe`، ثم Settings → Pages → Deploy from branch → main / root.
+**هذه النسخة تستخدم POST لإرسال JSON إلى دالة doPost الموجودة في Google Apps Script، لا JSONP أو doGet.**
 
-## إصلاح خطأ التقييم
-تم تغيير `script.js` ليستخدم POST/JSON كما تتطلب النسخة المنشورة حاليًا من Google Apps Script، بدل JSONP/GET الذي كان يسبب خطأ «تعذر الوصول لخدمة التقييمات».
+## النشر
+1. ارفع الملفات التالية إلى **جذر** مستودع `Pov_Cafe` (وليس داخل مجلد إضافي): `index.html`, `style.css`, `script.js`, مجلد `assets/`.
+2. يجب عدم رفع الملف ZIP نفسه فقط؛ فك الضغط ثم ارفع محتوياته.
+3. تأكد من وجود `index.html` في جذر المستودع.
+4. بعد Commit انتظر اكتمال GitHub Pages ثم افتح الرابط في نافذة خاصة؛ النسخة تضيف رقم إصدار للـ CSS/JS لتقليل مشكلات التخزين المؤقت.
 
-السكربت يحفظ الردود في جدول Google Sheets:
-https://docs.google.com/spreadsheets/d/1LTebuW1xP69z9HXXO0epU0c8dResmPnWwLyAQP4SgLc/edit
+## Google Apps Script
+الملف `google-apps-script/Code.gs` للمرجعية. تأكد أن المشروع المنشور هو المشروع الذي يحتوي على `doPost` بأسماء الحقول `usability`, `clarity`, `usefulness`, `feedback`. ثم من Manage deployments عدّل إصدار Web app إذا تغير كوده. اختر Execute as: Me وWho has access: Anyone.
 
-مهم: المتصفح يستخدم `no-cors` لذلك استجابة Google غير قابلة للقراءة؛ ظهور رسالة «تم إرسال طلب التقييم» لا يثبت وصول الصف. بعد النشر أرسل تقييمًا اختباريًا وراقب ظهور صف في تبويب «الردود». إذا لم يظهر، افتح Apps Script → Executions وتحقق من الأخطاء، وأعد نشر السكربت بالنسخة الموجودة في `google-apps-script/Code.gs` إذا لزم.
+## اختبار حقيقي
+أرسل تقييمًا تجريبيًا ثم افتح جدول [Google Sheets](https://docs.google.com/spreadsheets/d/1LTebuW1xP69z9HXXO0epU0c8dResmPnWwLyAQP4SgLc/edit) وتأكد من ظهور صف جديد في تبويب «الردود». رسالة المتصفح لا تثبت الحفظ؛ Apps Script لا يتيح قراءة استجابة cross-origin مباشرة بالطريقة الحالية.
 
-## صورة الكوب
-تم تضمين صورة محلية `assets/pov-cup-fallback.png` لضمان ظهورها على GitHub من دون رابط خارجي. صورة الكوب والطائر مماثلة لتصميم العلامة ولكن ليست نفس ملف صورة ChatGPT Sites الأصلي حرفيًا.
-
-## Excel
-يحفظ السكربت الردود مباشرة في Google Sheets، ويمكن تصديرها إلى Excel عبر File → Download → Microsoft Excel (.xlsx). إصدار الملف الحالي لا ينشئ نسخة XLSX جديدة تلقائيًا بعد كل إرسال.
+**ملاحظة:** هذه الحزمة لا تضمن مزامنة ملف XLSX منفصل تلقائيًا؛ السكربت يتلقى التقييمات في Google Sheets، ويمكن تنزيل الملف كـ Excel.
